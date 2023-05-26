@@ -8,7 +8,7 @@ package Logic;
  *
  * @author vanes
  */
-public interface List {
+public interface ListC {
     
     public void cancel();
     
@@ -16,19 +16,17 @@ public interface List {
     
     public boolean isEmpty();
     
-    public boolean exist(Object element);
+    public boolean exists(Object element);
     
     public void addHead(Object element);
     
     public void addEnd(Object element);
     
-    public void deleteByElement(Object element);
-    
     public Object getByPosition(int pos);
+    
+    public void deleteByElement(Object element);
     
     public Object firstInList();
     
-    public Object lastInList();
-
-    public String toString();
+    public Object lastInFirst();
 }

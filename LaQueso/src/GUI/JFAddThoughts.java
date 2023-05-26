@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Logic.DoubleLinkedList;
+import Logic.CircularDoubleLinkedList;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,13 +13,13 @@ import javax.swing.JOptionPane;
  */
 public class JFAddThoughts extends javax.swing.JFrame {
 
-    DoubleLinkedList doubleLinkedList;
+    CircularDoubleLinkedList circularDoubleLinkedList;
     /**
      * Creates new form JFAddThoughts
      */
-    public JFAddThoughts(DoubleLinkedList doubleLinkedList) {
+    public JFAddThoughts(CircularDoubleLinkedList circularDoubleLinkedList) {
         initComponents();
-        this.doubleLinkedList = doubleLinkedList;
+        this.circularDoubleLinkedList = circularDoubleLinkedList;
     }
 
     /**
@@ -83,11 +83,11 @@ public class JFAddThoughts extends javax.swing.JFrame {
     private void jBAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAddActionPerformed
         String thought = this.jTFThought.getText();
         
-        if(this.doubleLinkedList.getSize()>=10){
+        if(this.circularDoubleLinkedList.getSize()>=10){
             JOptionPane.showMessageDialog(this, "Limit is ten");
             this.setVisible(false);
         }else{
-            this.doubleLinkedList.addEnd(thought);
+            this.circularDoubleLinkedList.addEnd(thought);
             JOptionPane.showMessageDialog(this, "Aggregate");
         }
         

@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Logic.DoubleLinkedList;
+import Logic.CircularDoubleLinkedList;
 
 /**
  *
@@ -12,14 +12,14 @@ import Logic.DoubleLinkedList;
  */
 public class JFThoughts extends javax.swing.JFrame{
 
-    DoubleLinkedList doubleLinkedList;
+    CircularDoubleLinkedList circularDoubleLinkedList;
     int count =1;
     /**
      * Creates new form JFThoughts
      */
     public JFThoughts() {
         initComponents();
-        doubleLinkedList = new DoubleLinkedList();
+        circularDoubleLinkedList = new CircularDoubleLinkedList();
     }
 
     /**
@@ -141,33 +141,37 @@ public class JFThoughts extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBAddThoughtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAddThoughtActionPerformed
-        JFAddThoughts jFAddThoughts = new JFAddThoughts(doubleLinkedList);
+        JFAddThoughts jFAddThoughts = new JFAddThoughts(circularDoubleLinkedList);
         jFAddThoughts.setVisible(true);
    
     }//GEN-LAST:event_jBAddThoughtActionPerformed
 
     private void jBSeeThoughtsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSeeThoughtsActionPerformed
-        if(doubleLinkedList.isEmpty()){
+        if(circularDoubleLinkedList.isEmpty()){
             this.jTAThoughts.setText("Don't have thoughts");
         }else{
-        this.jTAThoughts.setText((String) doubleLinkedList.getByPosition(1));
+        this.jTAThoughts.setText((String) circularDoubleLinkedList.getByPosition(1));
         }
     }//GEN-LAST:event_jBSeeThoughtsActionPerformed
 
     private void jBLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLeftActionPerformed
-         if(count>=1){
-            this.jTAThoughts.setText((String) doubleLinkedList.getByPosition(--this.count));
-            System.out.println("LL"+doubleLinkedList.toString());
+         if(count>=0){
+             System.out.println(""+count);
+            this.jTAThoughts.setText((String)circularDoubleLinkedList.getByPosition(--this.count));
+                if(this.count == 0){
+                    this.count = circularDoubleLinkedList.getSize()+1;
+                    System.out.println(""+circularDoubleLinkedList.getSize());
+                }
             }
-         System.out.println("L"+count);
     }//GEN-LAST:event_jBLeftActionPerformed
 
     private void jBRigthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRigthActionPerformed
-        if(count<=doubleLinkedList.getSize()){
-               this.jTAThoughts.setText((String) doubleLinkedList.getByPosition(++this.count));
-               System.out.println("RR"+count);
+        if(count<=circularDoubleLinkedList.getSize()){
+               this.jTAThoughts.setText((String) circularDoubleLinkedList.getByPosition(++this.count));
+               if(this.count == circularDoubleLinkedList.getSize()+1){
+                    this.count = 0;
+                }
         }
-        System.out.println("R"+count);
     }//GEN-LAST:event_jBRigthActionPerformed
 
 
