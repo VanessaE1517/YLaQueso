@@ -4,7 +4,7 @@
  */
 package laqueso;
 
-import GUI.JFThoughts;
+import GUI.JFLogin;
 
 /**
  *
@@ -16,8 +16,8 @@ public class LaQueso {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JFThoughts jFThoughts = new JFThoughts();
-        jFThoughts.setVisible(true);
+        JFLogin jFLogin = new JFLogin();
+        jFLogin.setVisible(true);
     }
     
 }
