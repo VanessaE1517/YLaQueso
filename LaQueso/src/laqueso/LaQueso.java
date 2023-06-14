@@ -17,7 +17,9 @@ public class LaQueso {
      */
     public static void main(String[] args) {
         JFLogin jFLogin = new JFLogin();
+        jFLogin.setLocationRelativeTo(null);	
         jFLogin.setVisible(true);
+        
     }
     
 }

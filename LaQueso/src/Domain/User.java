@@ -4,6 +4,7 @@
  */
 package Domain;
 
+import Logic.LinkedStack;
 import Logic.Stack;
 import java.util.ArrayList;
 
@@ -11,23 +12,24 @@ import java.util.ArrayList;
  *
  * @author vanes
  */
-public class Usser {
+public class User {
     private String usserName;
     private String password;
-    private ArrayList<String> friends;
-    private ArrayList<String> request;
-    private Stack post;
+    private String friends;
+    private String request;
+    private LinkedStack post;
 
-    public Usser() {
+    public User() {
     }
 
-    public Usser(String usserName, String password, ArrayList<String> friends, ArrayList<String> request, Stack post) {
+    public User(String usserName, String password, String friends, String request, LinkedStack post) {
         this.usserName = usserName;
         this.password = password;
         this.friends = friends;
         this.request = request;
         this.post = post;
     }
+
     
     public String getUsserName() {
         return usserName;
@@ -45,27 +47,27 @@ public class Usser {
         this.password = password;
     }
 
-    public ArrayList<String> getFriends() {
+    public String getFriends() {
         return friends;
     }
 
-    public void setFriends(ArrayList<String> friends) {
+    public void setFriends(String friends) {
         this.friends = friends;
     }
 
-    public Stack getPost() {
+    public LinkedStack getPost() {
         return post;
     }
 
-    public void setPost(Stack post) {
+    public void setPost(LinkedStack post) {
         this.post = post;
     }
 
-    public ArrayList<String> getRequest() {
+    public String getRequest() {
         return request;
     }
 
-    public void setRequest(ArrayList<String> request) {
+    public void setRequest(String request) {
         this.request = request;
     }
 

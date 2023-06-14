@@ -4,8 +4,8 @@
  */
 package Business;
 
-import Data.UsserData;
-import Domain.Usser;
+import Data.UserData;
+import Domain.User;
 import java.io.IOException;
 import org.jdom.JDOMException;
 
@@ -13,14 +13,14 @@ import org.jdom.JDOMException;
  *
  * @author vanes
  */
-public class UsserBusiness {
-    UsserData usserData;
+public class UserBusiness {
+    UserData usserData;
 
-    public UsserBusiness(String routh) throws JDOMException, IOException {
-        usserData = new UsserData(routh);
+    public UserBusiness(String routh) throws JDOMException, IOException {
+        usserData = new UserData(routh);
     }
     
-    public void logUsser(Usser usser) throws IOException{
+    public void logUsser(User usser) throws IOException{
         this.usserData.LogUsser(usser);
     }
     
