@@ -4,7 +4,18 @@
  */
 package GUI;
 
+import Business.UserBusiness;
 import Logic.CircularDoubleLinkedList;
+import Utility.Routh;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.jdom.JDOMException;
 
 /**
  *
@@ -14,12 +25,20 @@ public class JFThoughts extends javax.swing.JFrame{
 
     CircularDoubleLinkedList circularDoubleLinkedList;
     int count =1;
+    String user;
     /**
      * Creates new form JFThoughts
      */
-    public JFThoughts() {
+    public JFThoughts(String user) {
         initComponents();
         circularDoubleLinkedList = new CircularDoubleLinkedList();
+        this.user = user;
+        DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy '@' HH:mm:ss/");
+        String date = dateFormat.format(Calendar.getInstance().getTime());
+        this.jlUser.setText(this.user);
+        this.jLDate.setText(date);
+        this.jlcount.setText(String.valueOf(this.count));
+        circularDoubleLinkedList.addEnd(date);
     }
 
     /**
@@ -32,105 +51,175 @@ public class JFThoughts extends javax.swing.JFrame{
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jBAddThought = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTAThoughts = new javax.swing.JTextArea();
+        jLDate = new javax.swing.JLabel();
+        jlUser = new javax.swing.JLabel();
+        jlcount = new javax.swing.JLabel();
+        jLConfirm = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jBAddThought = new javax.swing.JButton();
-        jBSeeThoughts = new javax.swing.JButton();
-        jBRigth = new javax.swing.JButton();
-        jBLeft = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTAThoughts.setColumns(20);
-        jTAThoughts.setRows(5);
-        jScrollPane1.setViewportView(jTAThoughts);
+        jPanel1.setPreferredSize(new java.awt.Dimension(342, 533));
 
-        jLabel1.setText("Thoughts");
+        jPanel2.setBackground(new java.awt.Color(23, 172, 170));
+        jPanel2.setPreferredSize(new java.awt.Dimension(348, 550));
 
-        jBAddThought.setText("Add thoughts");
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jBAddThought.setBackground(new java.awt.Color(23, 172, 170));
+        jBAddThought.setText("Add thought");
         jBAddThought.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBAddThoughtActionPerformed(evt);
             }
         });
 
-        jBSeeThoughts.setText("See thoughts");
-        jBSeeThoughts.addActionListener(new java.awt.event.ActionListener() {
+        jTAThoughts.setColumns(20);
+        jTAThoughts.setRows(5);
+        jTAThoughts.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane1.setViewportView(jTAThoughts);
+
+        jLDate.setText("Thoughts");
+
+        jlUser.setText("user");
+
+        jlcount.setText("count");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addContainerGap(43, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(136, 136, 136)
+                                .addComponent(jBAddThought))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLDate, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jlUser, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jlcount)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jlUser, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jlcount)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLDate, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jBAddThought)
+                .addContainerGap())
+        );
+
+        jLConfirm.setForeground(new java.awt.Color(255, 255, 255));
+        jLConfirm.setText("message");
+
+        jButton1.setBackground(new java.awt.Color(23, 172, 170));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        jButton1.setText("Go back");
+        jButton1.setBorder(null);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBSeeThoughtsActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        jBRigth.setText(">");
-        jBRigth.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Share your day");
+
+        jButton2.setBackground(new java.awt.Color(255, 249, 250));
+        jButton2.setText("Post");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBRigthActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
-        jBLeft.setText("<");
-        jBLeft.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBLeftActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 24, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(79, 79, 79))))))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(123, 123, 123)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(108, 108, 108)
+                        .addComponent(jLConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addGap(38, 38, 38)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addComponent(jButton2)
+                .addGap(50, 50, 50))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jBSeeThoughts)
-                            .addComponent(jBAddThought)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(5, 5, 5)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jBLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jBRigth, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 24, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jBAddThought)
-                .addGap(18, 18, 18)
-                .addComponent(jBSeeThoughts)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jBRigth, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(91, 91, 91))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(46, 46, 46)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(126, 126, 126)
-                        .addComponent(jBLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(92, 92, 92))))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,48 +230,65 @@ public class JFThoughts extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBAddThoughtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAddThoughtActionPerformed
-        JFAddThoughts jFAddThoughts = new JFAddThoughts(circularDoubleLinkedList);
-        jFAddThoughts.setVisible(true);
-   
+        String thought = this.jTAThoughts.getText();
+        
+        if(this.circularDoubleLinkedList.getSize()>=11){
+            this.jLConfirm.setText("LIMIT IS TEN"); 
+        }else{
+            this.circularDoubleLinkedList.addEnd(thought);
+            this.jTAThoughts.setText(" ");
+            this.jLConfirm.setText("THOUGHT: "+count+" ADD"); 
+            this.count++;
+            this.jlcount.setText(String.valueOf(this.count));
+            DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy '@' HH:mm:ss");
+            String date = dateFormat.format(Calendar.getInstance().getTime());
+            this.jLDate.setText(date);
+        }
     }//GEN-LAST:event_jBAddThoughtActionPerformed
 
-    private void jBSeeThoughtsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSeeThoughtsActionPerformed
-        if(circularDoubleLinkedList.isEmpty()){
-            this.jTAThoughts.setText("Don't have thoughts");
-        }else{
-        this.jTAThoughts.setText((String) circularDoubleLinkedList.getByPosition(1));
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        try {
+            JFPrincipal jFPrincipal;
+            jFPrincipal = new JFPrincipal(this.user);
+            jFPrincipal.setVisible(true);
+        this.setVisible(false);
+        } catch (JDOMException ex) {
+            Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jBSeeThoughtsActionPerformed
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jBLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLeftActionPerformed
-         if(count>=0){
-             System.out.println(""+count);
-            this.jTAThoughts.setText((String)circularDoubleLinkedList.getByPosition(--this.count));
-                if(this.count == 0){
-                    this.count = circularDoubleLinkedList.getSize()+1;
-                    System.out.println(""+circularDoubleLinkedList.getSize());
-                }
-            }
-    }//GEN-LAST:event_jBLeftActionPerformed
-
-    private void jBRigthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRigthActionPerformed
-        if(count<=circularDoubleLinkedList.getSize()){
-               this.jTAThoughts.setText((String) circularDoubleLinkedList.getByPosition(++this.count));
-               if(this.count == circularDoubleLinkedList.getSize()+1){
-                    this.count = 0;
-                }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
+            userBusiness.addThoughts(circularDoubleLinkedList,this.user);
+            circularDoubleLinkedList.cancel();
+            DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy '@' HH:mm:ss/");
+            String date = dateFormat.format(Calendar.getInstance().getTime());
+            this.jLDate.setText(date);
+        } catch (JDOMException ex) {
+            Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jBRigthActionPerformed
-
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAddThought;
-    private javax.swing.JButton jBLeft;
-    private javax.swing.JButton jBRigth;
-    private javax.swing.JButton jBSeeThoughts;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLConfirm;
+    private javax.swing.JLabel jLDate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTAThoughts;
+    private javax.swing.JLabel jlUser;
+    private javax.swing.JLabel jlcount;
     // End of variables declaration//GEN-END:variables
 }

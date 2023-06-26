@@ -4,9 +4,11 @@
  */
 package Domain;
 
+import Logic.CircularDoubleLinkedList;
 import Logic.LinkedStack;
 import Logic.Stack;
 import java.util.ArrayList;
+import javax.crypto.Cipher;
 
 /**
  *
@@ -17,12 +19,12 @@ public class User {
     private String password;
     private String friends;
     private String request;
-    private LinkedStack post;
+    private CircularDoubleLinkedList post;
 
     public User() {
     }
 
-    public User(String usserName, String password, String friends, String request, LinkedStack post) {
+    public User(String usserName, String password, String friends, String request, CircularDoubleLinkedList post) {
         this.usserName = usserName;
         this.password = password;
         this.friends = friends;
@@ -55,11 +57,11 @@ public class User {
         this.friends = friends;
     }
 
-    public LinkedStack getPost() {
+    public CircularDoubleLinkedList getPost() {
         return post;
     }
 
-    public void setPost(LinkedStack post) {
+    public void setPost(CircularDoubleLinkedList post) {
         this.post = post;
     }
 

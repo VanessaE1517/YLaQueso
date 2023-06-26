@@ -5,6 +5,7 @@
 package Data;
 
 import Domain.User;
+import Logic.AdjacenceList;
 import Logic.CircularDoubleLinkedList;
 import Logic.LinkedStack;
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.jdom.Attribute;
 import org.jdom.Content;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -61,13 +63,10 @@ public class UserData {
         eFriend.addContent(user.getFriends());
 
         Element ePosts=new Element("Posts");
-        LinkedStack linkedStack=user.getPost();
-        for (int i = 0; i < linkedStack.getsize(); i++) {
-            CircularDoubleLinkedList circularDoubleLinkedList=(CircularDoubleLinkedList)linkedStack.pop();
-            Element ePost = new Element("Post");
-           // ePost.setAttribute("Title", circularDoubleLinkedList.getTitle());
-        }
         
+
+        Element ePost = new Element("Post");
+
         Element eRequest=new Element("Requests");
         eRequest.addContent(user.getRequest());
         
@@ -84,15 +83,111 @@ public class UserData {
         List elementList = this.element.getChildren();
         for (Object object : elementList) {
             Element eUsser=(Element)object;
-            if(eUsser.getAttributeValue("Usser").equals(us)&& 
-                   eUsser.getAttributeValue("Password").equals(password)){
+            if(eUsser.getAttributeValue("Usser").equals(us)||(eUsser.getAttributeValue("Usser").equals(us)&& 
+                   eUsser.getAttributeValue("Password").equals(password))){
                 
                 return true;
             } 
         }
         return false;
     }
+    
+    public void addThoughts(CircularDoubleLinkedList list, String us) throws IOException{
+        User user=new User();
+        List elementList = this.element.getChildren();
+        for (Object object : elementList) {
+            Element eUsser=(Element)object;
+            if (eUsser.getAttributeValue("Usser").equals(us)) {
+                CircularDoubleLinkedList circularDoubleLinkedList = list;
+                Element eDates = new Element("Dates"); 
+                eDates.addContent((String) circularDoubleLinkedList.getByPosition(1));
+                Element ePost = new Element("Post");
+                for (int j = 2; j < circularDoubleLinkedList.getSize()+1; j++) {
+                    ePost.addContent((String) circularDoubleLinkedList.getByPosition(j));
+                }
+                eUsser.getChild("Posts").addContent(eDates);
+                eUsser.getChild("Posts").getChild("Dates").addContent(ePost);
+                this.saveXML();
+                
+            }
+        }    
+    }
+    
+    public void addFriends(String us, String friend) throws IOException{
+        User user=new User();
+        List elementList = this.element.getChildren();
+        for (Object object : elementList) {
+            Element eUser=(Element)object;
+            if (eUser.getAttributeValue("Usser").equals(us)) {
+                eUser.getChild("Friends").addContent(friend+" ");
+            }
+            if(eUser.getAttributeValue("Usser").equals(friend)){
+                eUser.getChild("Requests").addContent(us+" ");
+            }
+        }
+        this.saveXML();
+    }
+    
+    public CircularDoubleLinkedList getThoughts(String us){
+        User user=new User();
+        List elementList = this.element.getChildren();
+        CircularDoubleLinkedList circularDoubleLinkedList = new CircularDoubleLinkedList();
+        for (Object object : elementList) {
+            Element eUsser=(Element)object;
+            circularDoubleLinkedList.addEnd(eUsser.getChild("Posts").getChild("Dates").getValue()+".");
+            System.out.println(circularDoubleLinkedList.toString());
+        }
+        return circularDoubleLinkedList;
+    }
+    
+    public boolean searchUser(String us){
+        User user=new User();
+        List elementList = this.element.getChildren();
+        for (Object object : elementList) {
+            Element eUser=(Element)object;
+            if(eUser.getAttributeValue("Usser").equals(us)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public int friendsCommon(){
+        
+    }
+    
+    private AdjacenceList graph(){ 
+        AdjacenceList graph;
+        int count =0;
+        User user=new User();
+        List elementList = this.element.getChildren();
+        for (Object object : elementList) {
+            Element eUser=(Element)object;
+            count++;
+        }
+        graph = new AdjacenceList(count);
+        for (Object object : elementList) {
+            Element eUser=(Element)object;
+            graph.addVertex(eUser.getAttributeValue("Usser"));
+        }
+        return graph;
+    }
+    
+    private AdjacenceList fillGraph(){
+        AdjacenceList graph = graph();
+        User user=new User();
+        List elementList = this.element.getChildren();
+        for (Object object : elementList) {
+            Element eUser=(Element)object;
+            if(graph.showVertex(eUser.getAttributeValue("Usser"))){
+                eUser.getChild("Friends").getValue();
+                graph.addEdge(eUser.getAttributeValue("Usser"), object);
+            }
+        }
+    }
 }
+
+
     
 //    public boolean searchUser(String carnet) {
 //        Estudiante estudiante=new Estudiante();

@@ -47,7 +47,7 @@ public class CircularDoubleLinkedList implements ListC{
     public boolean exists(Object element) {
         Node aux = this.start;
         if (isEmpty()) {
-            throw new ExceptionList("¿is empty");
+            throw new ExceptionList("is empty");
         } else if(this.end.element==element){
             return true;
         }else{

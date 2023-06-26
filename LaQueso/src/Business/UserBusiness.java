@@ -6,6 +6,8 @@ package Business;
 
 import Data.UserData;
 import Domain.User;
+import Logic.CircularDoubleLinkedList;
+import Logic.LinkedStack;
 import java.io.IOException;
 import org.jdom.JDOMException;
 
@@ -14,21 +16,35 @@ import org.jdom.JDOMException;
  * @author vanes
  */
 public class UserBusiness {
-    UserData usserData;
+    UserData userData;
 
     public UserBusiness(String routh) throws JDOMException, IOException {
-        usserData = new UserData(routh);
+        userData = new UserData(routh);
     }
     
     public void logUsser(User usser) throws IOException{
-        this.usserData.LogUsser(usser);
+        this.userData.LogUsser(usser);
     }
     
     public boolean verifyUsser(String usser, String password) {
-        return this.usserData.verifyUsser(usser, password);
+        return this.userData.verifyUsser(usser, password);
     }
      
+    public void addThoughts(CircularDoubleLinkedList list, String us) throws IOException{
+        this.userData.addThoughts(list, us);
+    }
     
+    public CircularDoubleLinkedList getThoughts(String us){
+        return this.userData.getThoughts(us);
+    }
+    
+    public boolean searchUser(String us){
+        return this.userData.searchUser(us);
+    }
+    
+    public void addFriends(String us, String friend) throws IOException{
+         this.userData.addFriends(us, friend);
+    }
             
             
 }

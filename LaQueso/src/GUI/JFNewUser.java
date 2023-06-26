@@ -6,6 +6,7 @@ package GUI;
 
 import Business.UserBusiness;
 import Domain.User;
+import Logic.CircularDoubleLinkedList;
 import Logic.LinkedStack;
 import Logic.Stack;
 import Utility.Routh;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.Cipher;
 import org.jdom.JDOMException;
 
 /**
@@ -191,7 +193,7 @@ public class JFNewUser extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        LinkedStack stack = new LinkedStack();
+        CircularDoubleLinkedList list = new CircularDoubleLinkedList();
         try {
             UserBusiness usserBusiness = new UserBusiness(Routh.routhUssers);
             if(!usserBusiness.verifyUsser(this.jTFUserName.getText(), this.jTFPassword.getText())){
@@ -199,7 +201,7 @@ public class JFNewUser extends javax.swing.JFrame {
                     this.jTFPassword.getText(),
                     null,
                     null,
-                    stack  
+                    list  
                 ));
                 this.jLW.setText("Verify successfully");
             }else{

@@ -7,6 +7,7 @@ package GUI;
 import Business.UserBusiness;
 import Utility.Routh;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdom.JDOMException;
@@ -58,6 +59,7 @@ public class JFLogin extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Throughme");
 
+        jBLogin.setBackground(new java.awt.Color(255, 246, 247));
         jBLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jBLogin.setText("Login");
         jBLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -66,6 +68,7 @@ public class JFLogin extends javax.swing.JFrame {
             }
         });
 
+        jBNewUsser.setBackground(new java.awt.Color(255, 246, 247));
         jBNewUsser.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jBNewUsser.setText("New User");
         jBNewUsser.addActionListener(new java.awt.event.ActionListener() {
@@ -172,15 +175,11 @@ public class JFLogin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -190,9 +189,9 @@ public class JFLogin extends javax.swing.JFrame {
         try {
             UserBusiness usserBusiness = new UserBusiness(Routh.routhUssers);
             if(usserBusiness.verifyUsser(this.jFTUsser.getText(), this.jTextField1.getText())){
-                JFPrincipal jFPrincipal = new JFPrincipal();
+                JFPrincipal jFPrincipal = new JFPrincipal(this.jFTUsser.getText());
                 jFPrincipal.setVisible(true);
-                this.setLocationRelativeTo(null);	
+                jFPrincipal.setLocationRelativeTo(null);	
                 this.setVisible(false);
             }else{
                 this.jLabel5.setText("try again");
