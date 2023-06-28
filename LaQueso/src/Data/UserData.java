@@ -7,6 +7,7 @@ package Data;
 import Domain.User;
 import Logic.AdjacenceList;
 import Logic.CircularDoubleLinkedList;
+import Logic.LinkedQueue;
 import Logic.LinkedStack;
 import java.io.File;
 import java.io.File;
@@ -113,19 +114,48 @@ public class UserData {
         }    
     }
     
-    public void addFriends(String us, String friend) throws IOException{
+    public void addRequest(String us, String friend, String date) throws IOException{
         User user=new User();
         List elementList = this.element.getChildren();
         for (Object object : elementList) {
             Element eUser=(Element)object;
-            if (eUser.getAttributeValue("Usser").equals(us)) {
-                eUser.getChild("Friends").addContent(friend+" ");
-            }
             if(eUser.getAttributeValue("Usser").equals(friend)){
-                eUser.getChild("Requests").addContent(us+" ");
+                eUser.getChild("Requests").addContent(date+"/"+us+".");
             }
         }
         this.saveXML();
+    }
+    
+    public void acceptRequest(String us, String request) throws IOException{
+        User user=new User();
+        List elementList = this.element.getChildren();
+        for (Object object : elementList) {
+            Element eUser=(Element)object;
+            if(eUser.getAttributeValue("Usser").equals(us)){
+                eUser.getChild("Friends").addContent(us+" ");
+            }
+            if(eUser.getAttributeValue("Usser").equals(request)){
+                eUser.getChild("Friends").addContent(us+" ");
+            }
+        }
+        this.saveXML();   
+    }
+    
+    public LinkedQueue getRequest(String us){
+        User user=new User();
+        List elementList = this.element.getChildren();
+        LinkedQueue  queue = new LinkedQueue();
+        for (Object object : elementList) {
+            Element eUser=(Element)object;
+            if(eUser.getAttributeValue("Usser").equals(us)){
+                String[] request = eUser.getChild("Request").getValue().split(".");
+                for (int i = 0; i < request.length; i++) {
+                    queue.insert(request[i]);
+                }
+                return queue;
+            }
+        }
+        return queue;  
     }
     
     public CircularDoubleLinkedList getThoughts(String us){

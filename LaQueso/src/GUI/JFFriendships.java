@@ -5,8 +5,12 @@
 package GUI;
 
 import Business.UserBusiness;
+import Logic.LinkedQueue;
 import Utility.Routh;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdom.JDOMException;
@@ -17,6 +21,8 @@ import org.jdom.JDOMException;
  */
 public class JFFriendships extends javax.swing.JFrame {
     String us;
+    LinkedQueue queueRequest;
+    LinkedQueue queueDate;
     /**
      * Creates new form JFFriends
      */
@@ -28,6 +34,10 @@ public class JFFriendships extends javax.swing.JFrame {
         this.jLMessage.setVisible(false);
         this.jbSend.setVisible(false);
         this.jPTe.setVisible(false);
+        this.jLUser3.setVisible(false);
+        this.jLDate.setVisible(false);
+        this.jLMessage3.setVisible(false);
+        showRequest();
     }
 
     /**
@@ -95,6 +105,11 @@ public class JFFriendships extends javax.swing.JFrame {
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Accept");
         jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLMessage3.setFont(new java.awt.Font("Serif", 0, 14)); // NOI18N
         jLMessage3.setForeground(new java.awt.Color(204, 0, 0));
@@ -430,12 +445,51 @@ public class JFFriendships extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void getRequest() throws JDOMException{
+        try {
+            UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
+            LinkedQueue queue = userBusiness.getRequest(this.us);
+            LinkedQueue queueDate = new LinkedQueue();
+            LinkedQueue queueRequest = new LinkedQueue();
+            if(!queue.isEmpty()){
+                String que = (String) queue.delete();
+                String[] date = que.split("/");
+                for (int i = date.length; i >= 0; i-=2) {
+                    queueDate.insert(date[i]);
+                }
+                for (int i = date.length; i >= 1; i-=2) {
+                    queueRequest.insert(date[i]);
+                }
+                this.queueRequest = queueRequest;
+                this.queueDate = queueDate;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    private void showRequest(){
+        if(!this.queueRequest.isEmpty()){
+            this.jLMessage3.setVisible(false);
+            this.jLUser3.setVisible(true);
+            this.jLDate.setVisible(true);
+            this.jLUser3.setText((String) this.queueRequest.delete());
+            this.jLDate.setText((String) this.queueDate.delete());
+        }else{
+            this.jLUser3.setVisible(false);
+            this.jLDate.setVisible(false);
+            this.jLMessage3.setVisible(true);
+            this.jLMessage3.setText("Don't have request");
+        }
+    }
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.jLFriends.setVisible(false);
         this.jLUser.setVisible(false);
         this.jLMessage.setVisible(false);
         this.jbSend.setVisible(false);
         this.jPTe.setVisible(false);
+        
         try {
             UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
             if(userBusiness.searchUser(this.jTFUser.getText())){
@@ -460,8 +514,10 @@ public class JFFriendships extends javax.swing.JFrame {
 
     private void jbSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSendActionPerformed
          try {
+            DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy '@' HH:mm:ss/");
+            String date = dateFormat.format(Calendar.getInstance().getTime());
             UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
-            userBusiness.addFriends(this.us, this.jTFUser.getText());
+            userBusiness.addRequest(this.us, this.jTFUser.getText(), date);
             
         } catch (JDOMException ex) {
             Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
@@ -484,6 +540,10 @@ public class JFFriendships extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        showRequest();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
    
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -7,6 +7,7 @@ package Business;
 import Data.UserData;
 import Domain.User;
 import Logic.CircularDoubleLinkedList;
+import Logic.LinkedQueue;
 import Logic.LinkedStack;
 import java.io.IOException;
 import org.jdom.JDOMException;
@@ -42,9 +43,16 @@ public class UserBusiness {
         return this.userData.searchUser(us);
     }
     
-    public void addFriends(String us, String friend) throws IOException{
-         this.userData.addFriends(us, friend);
+    public void addRequest(String us, String friend, String date) throws IOException{
+         this.userData.addRequest(us, friend,date);
     }
             
+     public void acceptRequest(String us, String request) throws IOException{
+         this.userData.acceptRequest(us, request);
+     }
+     
+      public LinkedQueue getRequest(String us){
+          return this.userData.getRequest(us);
+      }
             
 }
