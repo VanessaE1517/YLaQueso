@@ -9,6 +9,7 @@ import Logic.CircularDoubleLinkedList;
 import Utility.Routh;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,6 +40,7 @@ public class JFThoughts extends javax.swing.JFrame{
         this.jLDate.setText(date);
         this.jlcount.setText(String.valueOf(this.count));
         circularDoubleLinkedList.addEnd(date);
+        this.jLConfirm.setVisible(false);
     }
 
     /**
@@ -235,8 +237,9 @@ public class JFThoughts extends javax.swing.JFrame{
         if(this.circularDoubleLinkedList.getSize()>=11){
             this.jLConfirm.setText("LIMIT IS TEN"); 
         }else{
-            this.circularDoubleLinkedList.addEnd(thought);
+            this.circularDoubleLinkedList.addEnd(thought+"_");
             this.jTAThoughts.setText(" ");
+            this.jLConfirm.setVisible(true);
             this.jLConfirm.setText("THOUGHT: "+count+" ADD"); 
             this.count++;
             this.jlcount.setText(String.valueOf(this.count));
@@ -251,11 +254,14 @@ public class JFThoughts extends javax.swing.JFrame{
         try {
             JFPrincipal jFPrincipal;
             jFPrincipal = new JFPrincipal(this.user);
+            jFPrincipal.setLocationRelativeTo(null);
             jFPrincipal.setVisible(true);
         this.setVisible(false);
         } catch (JDOMException ex) {
             Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -263,17 +269,23 @@ public class JFThoughts extends javax.swing.JFrame{
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
-            userBusiness.addThoughts(circularDoubleLinkedList,this.user);
-            circularDoubleLinkedList.cancel();
-            DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy '@' HH:mm:ss/");
-            String date = dateFormat.format(Calendar.getInstance().getTime());
-            this.jLDate.setText(date);
+            if(!circularDoubleLinkedList.isEmpty()){
+                this.count=0;
+                UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
+                userBusiness.addThoughts(circularDoubleLinkedList,this.user);
+                circularDoubleLinkedList.cancel();
+                DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy '@' HH:mm:ss/");
+                String date = dateFormat.format(Calendar.getInstance().getTime());
+                this.jLDate.setText(date);
+            }else{
+                this.jLConfirm.setText("Not write thougth");
+            }
         } catch (JDOMException ex) {
             Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(JFThoughts.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

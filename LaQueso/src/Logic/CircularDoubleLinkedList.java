@@ -40,22 +40,21 @@ public class CircularDoubleLinkedList implements ListC{
 
     @Override
     public boolean isEmpty() {
-        return this.start==null;
+        return (this.start==null&& this.end==null);
     }
 
     @Override
     public boolean exists(Object element) {
         Node aux = this.start;
-        if (isEmpty()) {
-            throw new ExceptionList("is empty");
-        } else if(this.end.element==element){
-            return true;
-        }else{
+        if (!isEmpty()) {
             while (aux != this.end) {
-                if (aux.element == element) {
+                if (aux.element.equals(element)) {
                     return true;
                 }
                 aux = aux.next;
+            }
+            if (this.end.element.equals(element)) {
+                return true;
             }
         }
         return false;
@@ -157,11 +156,11 @@ public class CircularDoubleLinkedList implements ListC{
     }
     
      public String toString() {
-        if(isEmpty()){
-            throw new ExceptionList("Is empty");
-        } 
-        String result = " ";
+         String result = " ";
         Node aux = this.start;
+        if(aux==null){
+            return "";
+        }
         while (aux != this.end) {
             result += aux.element + " ";
             aux = aux.next;

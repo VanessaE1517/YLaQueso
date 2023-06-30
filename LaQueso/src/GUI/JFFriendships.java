@@ -5,11 +5,14 @@
 package GUI;
 
 import Business.UserBusiness;
+import Logic.AdjacenceList;
 import Logic.LinkedQueue;
 import Utility.Routh;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,10 +26,16 @@ public class JFFriendships extends javax.swing.JFrame {
     String us;
     LinkedQueue queueRequest;
     LinkedQueue queueDate;
+    LinkedQueue queue;
+    ArrayList<String> friends = new ArrayList<>();
+    ArrayList<String> friendFriend = new ArrayList<>();
+    int x=0;
+    AdjacenceList graph;
+    int c =0;
     /**
      * Creates new form JFFriends
      */
-    public JFFriendships(String us) {
+    public JFFriendships(String us) throws JDOMException, IOException {
         initComponents();
         this.us = us;
         this.jLFriends.setVisible(false);
@@ -37,7 +46,11 @@ public class JFFriendships extends javax.swing.JFrame {
         this.jLUser3.setVisible(false);
         this.jLDate.setVisible(false);
         this.jLMessage3.setVisible(false);
+        getFriends();
+        getRequest();
         showRequest();
+        getSuggestion();
+        
     }
 
     /**
@@ -119,22 +132,22 @@ public class JFFriendships extends javax.swing.JFrame {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(77, 77, 77)
-                .addComponent(jLMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(jLFriends3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                        .addComponent(jButton4))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(jLUser3)
                         .addGap(53, 53, 53)
-                        .addComponent(jLDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(jLFriends3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                        .addComponent(jButton4))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(jLMessage3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18))
         );
         jPanel8Layout.setVerticalGroup(
@@ -167,7 +180,7 @@ public class JFFriendships extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(72, 72, 72)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Requests", jPanel2);
@@ -187,6 +200,11 @@ public class JFFriendships extends javax.swing.JFrame {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Send");
         jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jLMessage2.setFont(new java.awt.Font("Serif", 0, 14)); // NOI18N
         jLMessage2.setForeground(new java.awt.Color(204, 0, 0));
@@ -199,19 +217,16 @@ public class JFFriendships extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLUser2)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(jLFriends2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLUser2)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLMessage2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(82, 82, 82)
-                .addComponent(jLMessage2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -220,7 +235,7 @@ public class JFFriendships extends javax.swing.JFrame {
                 .addComponent(jLUser2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLMessage2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLFriends2)
                     .addComponent(jButton3))
@@ -241,7 +256,7 @@ public class JFFriendships extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Suggestion", jPanel3);
@@ -383,7 +398,7 @@ public class JFFriendships extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jTFUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
                 .addComponent(jPTe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
         );
@@ -445,31 +460,79 @@ public class JFFriendships extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void getRequest() throws JDOMException{
-        try {
-            UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
-            LinkedQueue queue = userBusiness.getRequest(this.us);
-            LinkedQueue queueDate = new LinkedQueue();
-            LinkedQueue queueRequest = new LinkedQueue();
-            if(!queue.isEmpty()){
-                String que = (String) queue.delete();
-                String[] date = que.split("/");
-                for (int i = date.length; i >= 0; i-=2) {
-                    queueDate.insert(date[i]);
-                }
-                for (int i = date.length; i >= 1; i-=2) {
-                    queueRequest.insert(date[i]);
-                }
-                this.queueRequest = queueRequest;
-                this.queueDate = queueDate;
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-    }
     
-    private void showRequest(){
-        if(!this.queueRequest.isEmpty()){
+    private void getSuggestion() throws JDOMException, IOException{
+        UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
+        graph = userBusiness.fillGraph();
+        friendFriend = (userBusiness.getFriends(friends.get(c)));
+        if(graph.verify(this.us)){
+            if (!(graph.existEdge(this.us, friendFriend.get(c)))) {
+                this.jLMessage2.setVisible(false);
+                 this.jLUser2.setVisible(true);
+                this.jLUser2.setText(friendFriend.get(c+1));
+            }else{
+                this.jLMessage2.setVisible(true);
+                this.jLUser2.setVisible(false);
+                this.jLMessage2.setText("We don't have suggestions for you");
+            }
+        }else{
+            this.jLMessage2.setVisible(true);
+                this.jLUser2.setVisible(false);
+                this.jLFriends2.setVisible(false);
+                this.jLMessage2.setText("We don't have suggestions for you");
+        }
+    }
+    private void getFriends() throws JDOMException, IOException{
+        this.jTAFriends.setText(" ");
+        UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
+        friends = userBusiness.getFriends(this.us);
+        if(!friends.isEmpty()){
+            this.jLMessage4.setVisible(false);
+            for (int i = 0; i < friends.size(); i++) {
+                this.jTAFriends.append("Friend: "+friends.get(i)+"\n");
+            }
+        }else{
+            this.jLMessage4.setVisible(true);
+            this.jLMessage4.setText("Don't have friends");
+        }
+        
+    }
+    private void getRequest() throws JDOMException, IOException {
+        UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
+        this.queue = userBusiness.getRequest(this.us);
+        this.queueDate = new LinkedQueue();
+        this.queueRequest = new LinkedQueue();
+
+        if (!this.queue.isEmpty()) {
+
+            String que = (String) queue.delete();
+            String[] date = que.split("/");
+
+            for (int i = 0; i < date.length - 1; i++) {
+
+                this.queueDate.insert(date[i]);
+                this.queueRequest.insert(date[i + 1]);
+                
+            }
+            for (int i = 0; i < this.queueRequest.getSize(); i++) {
+                String f =(String) this.queueRequest.delete();
+                String d =(String) this.queueDate.delete();
+                for (int j = 0; j < friends.size(); j++) {
+                    if(f.equals(friends.get(i))){
+                       x++; 
+                    }
+                }
+                if (x==0) {
+                    this.queueRequest.insert(f);
+                    this.queueDate.insert(d);
+                }
+            }  
+        }
+
+    }
+
+    private void showRequest() throws JDOMException{
+        if(!this.queueDate.isEmpty()){
             this.jLMessage3.setVisible(false);
             this.jLUser3.setVisible(true);
             this.jLDate.setVisible(true);
@@ -499,6 +562,7 @@ public class JFFriendships extends javax.swing.JFrame {
                 this.jLUser.setText(this.jTFUser.getText());
                 this.jPTe.setVisible(true);
             }else{
+                this.jLUser.setText(" ");
                 this.jLMessage.setVisible(true);
                 this.jLMessage.setText("Don't found");
                 this.jPTe.setVisible(true);
@@ -537,13 +601,49 @@ public class JFFriendships extends javax.swing.JFrame {
             Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        showRequest();
+        try {
+            showRequest();
+            UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
+            if(this.jLUser3.getText().equals(" ")){
+                getFriends();
+            }else{
+                userBusiness.acceptRequest(this.us, this.jLUser3.getText());
+                getFriends();
+            }
+            
+        } catch (JDOMException ex) {
+            Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            if(this.jLMessage2.getText().equals("We don't have suggestions for you")){
+                getSuggestion();
+            }else{
+            DateFormat dateFormat = new SimpleDateFormat("EEE, MMM d, yyyy '@' HH:mm:ss/");
+            String date = dateFormat.format(Calendar.getInstance().getTime());
+            UserBusiness userBusiness = new UserBusiness(Routh.routhUssers);
+            userBusiness.addRequest(this.us, this.jLUser2.getText(), date);
+            c++;
+            getSuggestion();
+            }
+            
+        } catch (JDOMException ex) {
+            Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(JFFriendships.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
    
     // Variables declaration - do not modify//GEN-BEGIN:variables

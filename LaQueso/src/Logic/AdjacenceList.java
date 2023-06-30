@@ -91,28 +91,28 @@ public class AdjacenceList implements Graph{
         }
     }
 
-    @Override
-    public void addWeight(Object v1, Object v2, int weigth) {
-        if (existVertex(v1) && existVertex(v2)&&existEdge(v1, v2)) {
-            if(!vertexes[getPosition(v1)].listWeight.isEmpty()){
-                vertexes[getPosition(v2)].listWeight.addEnd(weigth);
-            }else if(!vertexes[getPosition(v2)].listWeight.isEmpty()) {
-                vertexes[getPosition(v1)].listWeight.addEnd(weigth);
-            }else{
-                vertexes[getPosition(v2)].listWeight.addEnd(weigth);
-            }
-          
-        }
-    }
-//     @Override
+//    @Override
 //    public void addWeight(Object v1, Object v2, int weigth) {
 //        if (existVertex(v1) && existVertex(v2)&&existEdge(v1, v2)) {
-//           
-//            vertexes[getPosition(v1)].listWeight.addEnd(weigth);
-//            
-//            vertexes[getPosition(v2)].listWeight.addEnd(weigth);
+//            if(!vertexes[getPosition(v1)].listWeight.isEmpty()){
+//                vertexes[getPosition(v2)].listWeight.addEnd(weigth);
+//            }else if(!vertexes[getPosition(v2)].listWeight.isEmpty()) {
+//                vertexes[getPosition(v1)].listWeight.addEnd(weigth);
+//            }else{
+//                vertexes[getPosition(v2)].listWeight.addEnd(weigth);
+//            }
+//          
 //        }
 //    }
+     @Override
+    public void addWeight(Object v1, Object v2, int weigth) {
+        if (existVertex(v1) && existVertex(v2)&&existEdge(v1, v2)) {
+           
+            vertexes[getPosition(v1)].listWeight.addEnd(weigth);
+            
+            vertexes[getPosition(v2)].listWeight.addEnd(weigth);
+        }
+    }
 
     @Override
     public String bfs() {       
@@ -208,21 +208,59 @@ public class AdjacenceList implements Graph{
     }
     
     public String toString() {
-        String salida = "\nGraph information \n";
-        salida += "Vertexes: \n";
+        String salida = " ";
         for (int i = 0; i < count; i++) {
             salida += vertexes[i].element+" ";
         }
-        salida += "\nEdges and Weights \n";
         for (int i = 0; i < count; i++) {
             if (!vertexes[i].listEdge.isEmpty()) {
-                salida += "The vertex at position " + i + " is: " + vertexes[i].element + " It has edges with " + vertexes[i].listEdge.toString() + "\n";
+                salida += "\nThe vertex: " + i + " is: " + vertexes[i].element + " edges with " + vertexes[i].listEdge.toString() + "\n";
             }
             if (!vertexes[i].listWeight.isEmpty()) {
-                salida += "It has a weight of " + vertexes[i].listWeight.toString() + "\n";
+                salida += "weight of " + vertexes[i].listWeight.toString() + "\n";
             }
         }
         return salida;
+    }
+    
+    public String friends(Object us){
+        String salida = "";
+        
+        for (int i = 0; i < count; i++) {
+            if(vertexes[i].element.equals(us)){
+                salida += vertexes[i].listEdge.toString();
+                return salida;
+            }
+        }
+
+        return null;
+    }
+    
+    public boolean verify(Object us){
+         for (int i = 0; i < count; i++) {
+             if(vertexes[i].element.equals(us)){
+                if (!(vertexes[i].listEdge.toString().equals(""))) {
+                    return true;
+                }
+             }
+         }
+         return false;
+    }
+    
+    public String suggestion(Object us){
+        String salida = "";
+        
+        for (int i = 0; i < count; i++) {
+            if(vertexes[i].element.equals(us)){
+                for (int j = 0; j < count; j++) {
+                    vertexes[i].listEdge.exists(vertexes[j].listEdge);
+                }
+               
+                return salida;
+            }
+        }
+
+        return null;
     }
     
      public String mayores(Object element){
@@ -285,7 +323,7 @@ public class AdjacenceList implements Graph{
         }
         return false;
     } 
-    //metodos privados
+    //privados
     private int getPosition(Object element) {
         for (int i = 0; i < count; i++) {
             if (vertexes[i].element.equals(element)) {

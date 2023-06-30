@@ -6,10 +6,12 @@ package Business;
 
 import Data.UserData;
 import Domain.User;
+import Logic.AdjacenceList;
 import Logic.CircularDoubleLinkedList;
 import Logic.LinkedQueue;
 import Logic.LinkedStack;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.jdom.JDOMException;
 
 /**
@@ -44,15 +46,24 @@ public class UserBusiness {
     }
     
     public void addRequest(String us, String friend, String date) throws IOException{
-         this.userData.addRequest(us, friend,date);
+        this.userData.addRequest(us, friend,date);
     }
             
-     public void acceptRequest(String us, String request) throws IOException{
-         this.userData.acceptRequest(us, request);
-     }
+    public void acceptRequest(String us, String request) throws IOException{
+        this.userData.acceptRequest(us, request);
+    }
      
-      public LinkedQueue getRequest(String us){
-          return this.userData.getRequest(us);
-      }
+    public LinkedQueue getRequest(String us){
+        return this.userData.getRequest(us);
+    }
+      
+    public ArrayList getFriends(String us){
+        return this.userData.getFriends(us);
+    }
+    
+    public AdjacenceList fillGraph(){
+        return this.userData.fillGraph();
+    }
+      
             
 }

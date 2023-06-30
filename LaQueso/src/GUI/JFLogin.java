@@ -7,6 +7,7 @@ package GUI;
 import Business.UserBusiness;
 import Utility.Routh;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -200,6 +201,8 @@ public class JFLogin extends javax.swing.JFrame {
         } catch (JDOMException ex) {
             Logger.getLogger(JFLogin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Logger.getLogger(JFLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(JFLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jBLoginActionPerformed

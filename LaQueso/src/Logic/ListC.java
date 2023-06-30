@@ -29,4 +29,6 @@ public interface ListC {
     public Object firstInList();
     
     public Object lastInFirst();
+    
+    
 }

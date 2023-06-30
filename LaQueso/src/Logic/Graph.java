@@ -39,4 +39,6 @@ public interface Graph {
     public int sumaPesos();
     
     public int sumaVertices();
+    
+    public String friends(Object us);
 }

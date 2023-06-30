@@ -100,14 +100,11 @@ public class UserData {
             Element eUsser=(Element)object;
             if (eUsser.getAttributeValue("Usser").equals(us)) {
                 CircularDoubleLinkedList circularDoubleLinkedList = list;
-                Element eDates = new Element("Dates"); 
-                eDates.addContent((String) circularDoubleLinkedList.getByPosition(1));
                 Element ePost = new Element("Post");
-                for (int j = 2; j < circularDoubleLinkedList.getSize()+1; j++) {
+                for (int j = 1; j < circularDoubleLinkedList.getSize()+1; j++) {
                     ePost.addContent((String) circularDoubleLinkedList.getByPosition(j));
                 }
-                eUsser.getChild("Posts").addContent(eDates);
-                eUsser.getChild("Posts").getChild("Dates").addContent(ePost);
+                eUsser.getChild("Posts").addContent(ePost);
                 this.saveXML();
                 
             }
@@ -120,7 +117,7 @@ public class UserData {
         for (Object object : elementList) {
             Element eUser=(Element)object;
             if(eUser.getAttributeValue("Usser").equals(friend)){
-                eUser.getChild("Requests").addContent(date+"/"+us+".");
+                eUser.getChild("Requests").addContent(date+""+us+".");
             }
         }
         this.saveXML();
@@ -132,7 +129,7 @@ public class UserData {
         for (Object object : elementList) {
             Element eUser=(Element)object;
             if(eUser.getAttributeValue("Usser").equals(us)){
-                eUser.getChild("Friends").addContent(us+" ");
+                eUser.getChild("Friends").addContent(request+" ");
             }
             if(eUser.getAttributeValue("Usser").equals(request)){
                 eUser.getChild("Friends").addContent(us+" ");
@@ -147,8 +144,8 @@ public class UserData {
         LinkedQueue  queue = new LinkedQueue();
         for (Object object : elementList) {
             Element eUser=(Element)object;
-            if(eUser.getAttributeValue("Usser").equals(us)){
-                String[] request = eUser.getChild("Request").getValue().split(".");
+            if(eUser.getAttributeValue("Usser").equals(us)){    
+                String[] request = eUser.getChild("Requests").getValue().split("\\.");
                 for (int i = 0; i < request.length; i++) {
                     queue.insert(request[i]);
                 }
@@ -164,10 +161,31 @@ public class UserData {
         CircularDoubleLinkedList circularDoubleLinkedList = new CircularDoubleLinkedList();
         for (Object object : elementList) {
             Element eUsser=(Element)object;
-            circularDoubleLinkedList.addEnd(eUsser.getChild("Posts").getChild("Dates").getValue()+".");
-            System.out.println(circularDoubleLinkedList.toString());
+            if(eUsser.getAttributeValue("Usser").equals(us)){
+                    circularDoubleLinkedList.addEnd(eUsser.getChild("Posts").getChild("Post").getValue()+".");
+                    System.out.println(eUsser.getChild("Posts").getChild("Post").getValue());
+                    return circularDoubleLinkedList;
+                
+            }    
         }
         return circularDoubleLinkedList;
+    }
+    
+    public ArrayList getFriends(String us){
+        User user=new User();
+        List elementList = this.element.getChildren();
+        ArrayList<String> friend = new ArrayList<>();
+        for (Object object : elementList) {
+            Element eUser=(Element)object;       
+            if(eUser.getAttributeValue("Usser").equals(us)){
+                String[] friends = eUser.getChild("Friends").getValue().split(" ");
+                for (int i = 0; i < friends.length; i++) {
+                    friend.add(friends[i]);
+                }
+                return friend;
+            }
+        }
+        return friend;
     }
     
     public boolean searchUser(String us){
@@ -182,9 +200,9 @@ public class UserData {
         return false;
     }
     
-    public int friendsCommon(){
-        
-    }
+//    public int friendsCommon(){
+//        
+//    }
     
     private AdjacenceList graph(){ 
         AdjacenceList graph;
@@ -203,17 +221,22 @@ public class UserData {
         return graph;
     }
     
-    private AdjacenceList fillGraph(){
+    public AdjacenceList fillGraph(){
         AdjacenceList graph = graph();
         User user=new User();
         List elementList = this.element.getChildren();
         for (Object object : elementList) {
             Element eUser=(Element)object;
             if(graph.showVertex(eUser.getAttributeValue("Usser"))){
-                eUser.getChild("Friends").getValue();
-                graph.addEdge(eUser.getAttributeValue("Usser"), object);
+                String[] friends = eUser.getChild("Friends").getValue().split(" ");
+                for (int i = 0; i < friends.length; i++) {
+                    if(!graph.existEdge(eUser.getAttributeValue("Usser"),friends[i])){
+                        graph.addEdge(eUser.getAttributeValue("Usser"),friends[i] );
+                    }
+                }
             }
         }
+        return graph;
     }
 }
 
